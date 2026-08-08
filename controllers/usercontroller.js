@@ -14,6 +14,10 @@ used to interact with the users collection in the MongoDB database*/
 const User = require("../models/User");
 
 
+/*here we are importing the mongoose for mongo db functions */
+const mongoose = require("mongoose");
+
+
 /*we are initialising the first ID as 1 one to generate auot IDs we will 
 create function for it */
 /*let nextId = 1; wwe are not using this anymore as we are using MongoDB 
@@ -170,9 +174,15 @@ async function loginUser(req, res) {
 and exporting them for use in the routes using module.exports 
 like joblib in python*/
 async function   getUsers(req, res) {
-    try {
-        const users = await User.find();/*here we are finding all the users 
+    try {/*here we used pagionation to send 10 users per page
+         as showing all the users in single page is bit risky*/
+        const users = await User.find()
+               .select("-password")
+               .skip(0)
+               .limit(10);/*here we are finding all the users 
         using the find method of the User model*/
+        /*and also we are nto sending the hashed password as it is confidential 
+        select("-password") will explicit the password and send other details as response*/
         return res.status(200).json({
             success: true,
             users
@@ -180,102 +190,205 @@ async function   getUsers(req, res) {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: error.message
+            message: "Internal Server Error"
         });
     }
 }
 
 /*here we are creating a function to update user details and it will be used
 by the admin and the user itself to update their details*/
-async function updateUser(req, res) {
+const updateUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
 
-    const userId = req.params.id;/*here we changed the number conversion to 
-    string as MongoDB generates unique string IDs for each document*/
+        // 1. Validate MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid User ID"
+            });
+        }
 
-    const user = await User.findById(userId );/*here we are finding the user by 
-    id using the findById method of the User model*/
+        // 2. Authorization check
+        // Admin can update anyone.
+        // Normal user can update only their own account.
+        if (
+            req.user.role !== "admin" &&
+            req.user.id !== userId
+        ) {
+            return res.status(403).json({
+                success: false,
+                message: "Access Denied"
+            });
+        }
 
-    if (!user) {
+        // 3. Find the user
+        const user = await User.findById(userId);
 
-        return res.status(404).json({
-            success: false,
-            message: "User Not Found"
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User Not Found"
+            });
+        }
+
+        // 4. Create an object containing ONLY allowed fields
+        const updateData = {};
+
+        if (req.body.name !== undefined) {
+            updateData.name = req.body.name.trim();
+        }
+
+        // 5. Handle email update
+        if (req.body.email !== undefined) {
+            const normalizedEmail = req.body.email
+                .trim()
+                .toLowerCase();/*here we are normalizing the email using 
+                trim and tolowercase*/
+
+            // Check whether another user already has this email
+            const existingUser = await User.findOne({
+                email: normalizedEmail,
+                _id: { $ne: userId }
+            });/*$ne means "not equal". Find a user with this email whose _id is
+             not the user currently being updated.*/
+
+            if (existingUser) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Email already exists"
+                });
+            }
+
+            updateData.email = normalizedEmail;
+        }
+
+        // 6. Handle password update
+        if (req.body.password !== undefined) {
+            updateData.password = await bcrypt.hash(
+                req.body.password,
+                10
+            );
+        }
+
+        // 7. Update the user
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            updateData,
+            {/* new, runValidators are options provided by Mongoose.*/
+                new: true,/*shows the new updated object instead of before update 
+                object*/
+                runValidators: true /*tells Mongoose to apply the schema validation 
+                rules when performing the update*/
+            }
+        ).select("-password");/*excluding the password */
+
+        // 8. Send response
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            user: updatedUser
         });
 
-    }
+    } catch (error) {
 
-    if (
-        req.user.role !== "admin" &&
-        req.user.id !== userId
-    ) {
+        // Log the actual error on the server
+        console.error("Update User Error:", error);
 
-        return res.status(403).json({
+        // Send a safe error message to the client
+        return res.status(500).json({
             success: false,
-            message: "Access Denied"
+            message: "Internal Server Error"
         });
-
     }
+};
 
-    const { name, email } = req.body;/*here we are destructuring the name and 
-    email from the request body for clean code*/
-
-    if (!name && !email) {/*here we are checking if the user has not provided any details to update
-and if not we will return a message saying nothing to update*/
-
-        return res.status(400).json({
-            success: false,
-            message: "Nothing to update"
-        });
-
-    }
-
-    if (name) {
-        user.name = name;
-    }
-
-    if (email) {
-        user.email = email;
-    }
-
-    await user.save();/*this line stores the updated user details in the 
-    database using the save method of the User model*/
-
-    return res.json({
-        success: true,
-        message: "User updated successfully",
-        user
-    });
-
-}
-
-/*here we are creating a function to delete a user and it will be used
-by the admin and the user itself to delete their account*/
+//*
+ * This function allows an admin or the user themselves
+ * to delete a user account.
+ */
 async function deleteUser(req, res) {
 
-    const userId = req.params.id;/*here we changed the number conversion to 
-    string as MongoDB generates unique string IDs for each document*/
+    try {
 
-    const user = await User.findById(userId );/*here we are finding the user by 
-    id using the findById method of the User model*/
+        // Get the MongoDB document ID from the URL.
+        // MongoDB uses ObjectId for document IDs, and
+        // req.params.id is received as a string.
+        const userId = req.params.id;
 
-    if (!user) {
 
-        return res.status(404).json({
+        // 1. Validate the MongoDB ObjectId.
+        // This prevents Mongoose CastError for invalid IDs.
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Invalid User ID"
+            });
+
+        }
+
+
+        // 2. Authorization check.
+        //
+        // Admins can delete any user.
+        // A normal user can delete only their own account.
+        //
+        // req.user.id comes from the JWT payload.
+        // req.user.role comes from the JWT payload.
+        if (
+            req.user.role !== "admin" &&
+            req.user.id !== userId
+        ) {
+
+            return res.status(403).json({
+                success: false,
+                message: "Access Denied"
+            });
+
+        }
+
+
+        // 3. Find and delete the user in ONE database operation.
+        //
+        // findByIdAndDelete() returns the deleted document
+        // if the user exists.
+        //
+        // If no user exists with this ID, it returns null.
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+
+        // 4. Valid ObjectId, but no user was found.
+        if (!deletedUser) {
+
+            return res.status(404).json({
+                success: false,
+                message: "User Not Found"
+            });
+
+        }
+
+
+        // 5. User successfully deleted.
+        return res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        });
+
+    } catch (error) {
+
+        // Log the actual error on the server.
+        console.error("Delete User Error:", error);
+
+
+        // Don't expose internal database/server errors
+        // to the client.
+        return res.status(500).json({
             success: false,
-            message: "User Not Found"
+            message: "Internal Server Error"
         });
 
     }
-
-
-    await User.findByIdAndDelete(userId);/*here we are deleting the user by
-     id using the findByIdAndDelete method of the User model*/
-
-    return res.json({
-        success: true,
-        message: "User deleted successfully"
-    });
-
 }
 
 /*here we are creating a function to promote a user to admin role*/
