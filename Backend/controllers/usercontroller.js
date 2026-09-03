@@ -148,10 +148,10 @@ async function loginUser(req, res) {
 
     const token = jwt.sign(
         payload,
-        process.env.JWT_SECRET,/*this is the secret key used to sign the token 
-        and it should be kept secret and not be shared with anyone
-        we will replace this with an environment variable in production 
-        later*/
+        process.env.JWT_SECRET,/*this is the secret key used to sign the token.
+It is stored in the .env file and accessed through
+process.env.JWT_SECRET so that the secret is not hard-coded
+directly in the source code.*/
         {
            expiresIn: "2h"/*expires in is a optionIt limits the lifetime of a JWT. 
            If a token is stolen, it cannot be used forever because it automatically
@@ -304,9 +304,9 @@ const updateUser = async (req, res) => {
 };
 
 //*
- * This function allows an admin or the user themselves
- * to delete a user account.
- */
+ /* This function allows an admin or the user themselves to
+ //  delete a user account.*/
+ 
 async function deleteUser(req, res) {
 
     try {
@@ -393,42 +393,67 @@ async function deleteUser(req, res) {
 
 /*here we are creating a function to promote a user to admin role*/
 async function promoteUser(req, res) {
+    try {
 
-    const userId = req.params.id;/*here we changed the number conversion to 
-    string as MongoDB generates unique string IDs for each document*/
+        // Get the user ID from the URL
+        const userId = req.params.id;
 
-    const user = await User.findById(userId);/*here we are finding the user by 
-    id using the findById method of the User model*/
+        // 1. Validate MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid User ID"
+            });/*here we are validating the object of the user id */
+        }
 
-    if (!user) {
+        // 2. Find the user
+        const user = await User.findById(userId);
 
-        return res.status(404).json({
-            success: false,
-            message: "User Not Found"
+        // 3. Check whether the user exists
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User Not Found"
+            });
+        }
+
+        // 4. Check whether the user is already an admin
+        if (user.role === "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "User is already an admin"
+            });
+        }
+
+        // 5. Promote the user
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { role: "admin" },
+            {
+                new: true,
+                runValidators: true/*here we are initiating the mongodb schema 
+                validation*/
+            }
+        ).select("-password");
+
+        // 6. Return the updated user
+        return res.status(200).json({
+            success: true,
+            message: "User promoted successfully",
+            user: updatedUser
         });
 
+    } catch (error) {
+
+        // Log the actual error on the server
+        console.error("Promote User Error:", error);
+
+        // Return a safe error message to the client
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
     }
-    
-    if (user.role === "admin") {
-
-    return res.status(400).json({
-        success: false,
-        message: "User is already an admin"
-    });
-
-}     
-
-
-    user.role = "admin";
-
-    await user.save();/*this line stores the updated user details in the 
-    database using the save method of the User model*/
-
-    return res.json({
-        success: true,
-        message: "User promoted successfully"
-    });
-
 }
 
 module.exports = {

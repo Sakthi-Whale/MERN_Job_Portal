@@ -43,12 +43,6 @@ router.get("/", authMiddleware,adminMiddleware, getUsers);/*here we are adding
  it from unauthorized access and also adminMiddleware to allow admin users
   to access it*/
 
-  router.put(
-    "/promote/:id",
-    authMiddleware,
-    adminMiddleware,
-    promoteUser
-);/*router for promoting a user to admin*/
 
 router.put(
     "/:id",
@@ -73,7 +67,6 @@ admin users can delete other users account but not their own account*/
 router.delete(
     "/:id",
     authMiddleware,
-    adminMiddleware,
     deleteUser
 );
 

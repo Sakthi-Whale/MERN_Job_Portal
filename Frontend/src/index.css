@@ -1,0 +1,11 @@
+/*this file is used to provide basic global CSS styling for the entire Job Portal application*/
+
+* {/*here * means all elements in the html page, * is a universal selector*/
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;/*0 removes the default margin around the body of the page, which is often added by browsers.*/
+    font-family: Arial, sans-serif;
+}/*This applies styles to the <body> of your HTML page. It removes the default margin and sets the font family to Arial, 
+with a fallback to sans-serif fonts.*/

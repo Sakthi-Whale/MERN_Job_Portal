@@ -11,7 +11,8 @@ const app = express();
 
 /*here we are calling the connectDB function to establish a connection to the
  MongoDB database*/
-connectDB();/*we intentionally called this function here so that the connection 
+
+/*we intentionally called this function here so that the connection 
 is established before the server starts listening for requests*/
 
 /*here we are importing the userroutes functions*/
@@ -20,11 +21,26 @@ is established before the server starts listening for requests*/
  /*this tells Whenever a request starts with /users, send it to userRoutes.js.*/
 const userRoutes = require("./routes/userRoutes");
 
+/*here we are importing the jobroutes functions*/
+const jobRoutes = require("./routes/jobroutes");
+
+/*here we are importing the applicationroutes functions*/
+const applicationRoutes = require("./routes/applicationRoutes");
+
 app.use(express.json());
 
 /*we have defined "/users" here so we dont have to 
- denote it in userroutes.js or usercontroller.js files*/
+denote it in userroutes.js or usercontroller.js files*/
 app.use("/users", userRoutes);
+
+/*we have defined "/jobs" here so we dont have to 
+denote it in jobroutes.js or jobcontroller.js files*/
+app.use("/api/jobs", jobRoutes);
+
+
+/*we have defined "/applications" here so we dont have to 
+denote it in applicationroutes.js or applicationcontroller.js files*/
+app.use("/api/applications", applicationRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello, Sakthivel!");

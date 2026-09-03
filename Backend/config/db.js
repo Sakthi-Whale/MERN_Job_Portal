@@ -1,8 +1,11 @@
+/*this file is used to connect to the MongoDB database using Mongoose. It exports a function that establishes 
+the connection and handles any errors that may occur during the process.*/
+
 const mongoose = require("mongoose");
 
 async function connectDB() {
     try {
-        await mongoose.connect("mongodb://localhost:27017/ai-job-portal");
+        await mongoose.connect(process.env.MONGO_URI);
 
         console.log("✅ MongoDB Connected Successfully");
     } catch (error) {

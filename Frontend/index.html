@@ -1,0 +1,44 @@
+<!--this file is used to provide the basic HTML structure of our Job Portal application 
+and contains the root element where the React application is rendered-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!--UTF-8 is a character encoding. In simple terms,
+    it tells the browser how to understand and display characters correctly.-->
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <!-- Makes the webpage responsive by matching the viewport to the device width. -->
+
+    <title>AI Job Portal</title>
+</head>
+
+<body>
+
+    <!--
+        React will render the entire application inside this element.
+        main.tsx finds this element using document.getElementById("root").
+    -->
+    <div id="root"></div>
+    <!--root container to hold the React application-->
+
+    <!--
+        This starts our React application.
+        main.tsx imports App.tsx and renders the React components.
+    -->
+    <script
+        type="module"
+        src="/src/main.tsx"
+    ></script>
+
+</body>
+
+</html>
+
+<!--so this file contains the basic HTML structure for our React application where react handles
+the rendering and management of the user interface.-->

@@ -1,0 +1,1019 @@
+/*this file is used to provide the detailed styling and responsive layout for the Job Portal application, 
+including forms, buttons, job cards, applications, header, and navigation*/
+
+
+/* Apply border-box sizing to all elements */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* Basic page styling */
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f5f5f5;
+
+    color: #333;
+}
+
+
+/* Authentication page */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 30px 20px;
+
+    background-color: #f5f7fb;
+}
+
+
+/* Login and Register form */
+
+.auth-form {
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 35px;
+
+    background-color: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+/* Authentication heading */
+
+.auth-form h2 {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+/* Authentication subtitle */
+
+.auth-subtitle {
+    margin: 0 0 10px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* Authentication input */
+
+.auth-input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Input focus */
+
+.auth-input:focus {
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* Authentication button */
+
+.auth-button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background-color: #2563eb;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+
+/* Authentication button hover */
+
+.auth-button:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Authentication error */
+
+.auth-error {
+    margin: 0;
+
+    text-align: center;
+
+    color: #dc2626;
+
+    font-size: 14px;
+}
+
+
+/* Authentication success */
+
+.auth-success {
+    margin: 0;
+
+    text-align: center;
+
+    color: #16a34a;
+
+    font-size: 14px;
+}
+
+
+/* Main container for job cards */
+
+.jobs-container {
+    width: 100%;
+
+    max-width: 800px;
+
+    margin: 0 auto;
+
+    padding: 40px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* Job card */
+
+.job-card {
+    width: 100%;
+
+    max-width: 700px;
+
+    padding: 25px;
+
+    background-color: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* Job information */
+
+.job-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* Job title */
+
+.job-card h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+/* Job information */
+
+.job-card p {
+    margin: 8px 0;
+
+    color: #666;
+
+    font-size: 16px;
+}
+
+
+/* Apply button */
+
+.apply-btn {
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #2563eb;
+
+    color: white;
+
+    transition: background-color 0.2s ease;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* Apply button hover */
+
+.apply-btn:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Add Job form */
+
+.job-form-container {
+    width: 100%;
+
+    max-width: 800px;
+
+    margin: 30px auto 10px;
+
+    padding: 25px;
+
+    background-color: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Add Job form heading */
+
+.job-form-header {
+    margin-bottom: 20px;
+}
+
+
+.job-form-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 22px;
+
+    color: #1f2937;
+}
+
+
+.job-form-header p {
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #6b7280;
+}
+
+
+/* Add Job form */
+
+.job-form {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+
+/* Add Job inputs */
+
+.job-form-input {
+    flex: 1;
+
+    min-width: 200px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Add Job input focus */
+
+.job-form-input:focus {
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* Add Job button */
+
+.job-form-button {
+    padding: 12px 22px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background-color: #2563eb;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+
+/* Add Job form button hover */
+
+.job-form-button:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Add Job form responsive layout */
+
+@media (max-width: 600px) {
+
+    .job-form-container {
+        margin: 20px auto;
+
+        padding: 20px;
+    }
+
+    .job-form {
+        flex-direction: column;
+    }
+
+    .job-form-input {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+    .job-form-button {
+        width: 100%;
+    }
+}
+
+
+/* Job card actions */
+
+.admin-job-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+/* Common job action button styling */
+
+.admin-job-actions button {
+    padding: 9px 14px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+
+/* Edit button */
+
+.edit-btn {
+    background-color: #f3f4f6;
+
+    color: #374151;
+}
+
+
+.edit-btn:hover {
+    background-color: #e5e7eb;
+}
+
+
+/* Delete button */
+
+.delete-btn {
+    background-color: #fee2e2;
+
+    color: #dc2626;
+}
+
+
+.delete-btn:hover {
+    background-color: #fecaca;
+}
+
+
+/* View applications button */
+
+.view-applications-btn {
+    background-color: #dbeafe;
+
+    color: #1d4ed8;
+}
+
+
+.view-applications-btn:hover {
+    background-color: #bfdbfe;
+}
+
+
+/* Job edit form */
+
+.job-edit-form {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* Job edit inputs */
+
+.job-edit-input {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.job-edit-input:focus {
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* Edit form buttons */
+
+.job-edit-actions {
+    display: flex;
+
+    gap: 8px;
+}
+
+
+/* Save button */
+
+.save-btn {
+    padding: 9px 16px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #16a34a;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.save-btn:hover {
+    background-color: #15803d;
+}
+
+
+/* Cancel button */
+
+.cancel-btn {
+    padding: 9px 16px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #f3f4f6;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.cancel-btn:hover {
+    background-color: #e5e7eb;
+}
+
+
+/* Mobile job card */
+
+@media (max-width: 600px) {
+
+    .job-card {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .apply-btn {
+        width: 100%;
+    }
+
+    .admin-job-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .admin-job-actions button {
+        width: 100%;
+    }
+
+}
+
+
+/* Applications page */
+
+.applications-container {
+    width: 100%;
+
+    max-width: 800px;
+
+    margin: 40px auto;
+
+    padding: 0 20px;
+}
+
+
+/* Applications header */
+
+.applications-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+
+.applications-header h2 {
+    margin: 0 0 5px;
+
+    font-size: 28px;
+
+    color: #1f2937;
+}
+
+
+.applications-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* Back to jobs button */
+
+.back-to-jobs-btn {
+    padding: 10px 16px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background-color: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: background-color 0.2s ease;
+}
+
+
+.back-to-jobs-btn:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Applications list */
+
+.applications-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+/* Application card */
+
+.application-card {
+    width: 100%;
+
+    padding: 20px;
+
+    background-color: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Application information */
+
+.application-info h3 {
+    margin: 0 0 7px;
+
+    font-size: 19px;
+
+    color: #1f2937;
+}
+
+
+.application-info p {
+    margin: 0;
+
+    font-size: 15px;
+
+    color: #6b7280;
+}
+
+
+/* Application status */
+
+.application-status {
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background-color: #dcfce7;
+
+    color: #15803d;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* Empty applications */
+
+.empty-applications {
+    padding: 45px 25px;
+
+    background-color: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+.empty-applications h3 {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+
+    color: #374151;
+}
+
+
+.empty-applications p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* Mobile applications */
+
+@media (max-width: 600px) {
+
+    .applications-container {
+        margin: 25px auto;
+
+        padding: 0 15px;
+    }
+
+    .applications-header {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .applications-header h2 {
+        font-size: 24px;
+    }
+
+    .back-to-jobs-btn {
+        width: 100%;
+    }
+
+    .application-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .application-status {
+        align-self: flex-start;
+    }
+
+}
+
+
+/* Main application header */
+
+.app-header {
+    width: 100%;
+
+    background-color: white;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+.app-header-content {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 18px 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* Application logo */
+
+.app-logo h1 {
+    margin: 0;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+.app-logo span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    color: #6b7280;
+}
+
+
+/* Navigation */
+
+.app-nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* Navigation button */
+
+.nav-button {
+    padding: 9px 15px;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 7px;
+
+    background-color: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.nav-button:hover {
+    background-color: #dbeafe;
+
+    border-color: #bfdbfe;
+}
+
+
+/* Logout button */
+
+.logout-button {
+    padding: 9px 15px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 7px;
+
+    background-color: #fef2f2;
+
+    color: #dc2626;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.logout-button:hover {
+    background-color: #fee2e2;
+
+    border-color: #fca5a5;
+}
+
+
+/* Mobile header */
+
+@media (max-width: 600px) {
+
+    .app-header-content {
+        padding: 15px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .app-logo {
+        text-align: center;
+    }
+
+    .app-nav {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .nav-button,
+    .logout-button {
+        width: 100%;
+    }
+
+}
