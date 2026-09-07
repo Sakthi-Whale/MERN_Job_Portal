@@ -7,7 +7,7 @@ const {
     addJob,
     updateJob,
     deleteJob,
-} = require("../controllers/jobcontroller");
+} = require("../controllers/jobController");
 
 /*here we are importing the authMiddleware function from the authMiddleware.js file
 which will be used to protect the routes that require authentication. */
