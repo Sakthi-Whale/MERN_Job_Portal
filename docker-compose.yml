@@ -1,0 +1,43 @@
+services:
+
+  mongo:
+    image: mongo:8
+    container_name: jobportal-mongo
+    volumes:
+      - jobportal-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+
+  backend:
+    build:
+      context: ./backend
+    container_name: jobportal-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - docker-compose.env #this tells docker-compose to use the environment variables defined in the docker-compose.env file for the backend service.
+    depends_on:
+      mongo:
+        condition: service_healthy #this tells docker-compose to wait for the mongo service to be healthy before starting the backend service. The healthcheck 
+        #defined in the mongo service will determine when the mongo service is considered healthy.
+
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: jobportal-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+
+volumes:
+  jobportal-mongo-data:
+    external: true  #external true means there is already a volume created with the name jobportal-mongo-data, so it will use that 
+    #svolume instead of creating a new one.

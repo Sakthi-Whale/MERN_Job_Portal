@@ -1,7 +1,7 @@
 # Stage 1: Build the React application
 FROM node:24 AS build
 
-# Set the working directory inside the container
+# Set the working directory inside the Docker container
 WORKDIR /app
 
 # Copy package files first
@@ -24,6 +24,10 @@ FROM nginx:alpine
 
 # Copy the production files generated in Stage 1
 COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy our custom Nginx configuration
+# This configuration allows Nginx to forward API requests to the backend container
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Nginx listens on port 80
 EXPOSE 80
