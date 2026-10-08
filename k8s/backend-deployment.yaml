@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: backend #here we are specifying the label selector for the deployment which will be used to identify the pods that it manages
+
+  template:
+    metadata:
+      labels:
+        app: backend #here we are labeling the pod with the label app: backend which will be used by the deployment to identify the pods that it manages
+
+    spec:
+      containers:
+        - name: backend
+          image: mern-stack-ai_job_stack-backend:latest
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config #here we are specifying the name of the ConfigMap that contains the MONGO_URI key-value pair. This tells Kubernetes to look for a ConfigMap named backend-config and retrieve the value associated with the MONGO_URI key.
+                  key: MONGO_URI
+
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config #here we are referencing the same ConfigMap named backend-config to retrieve the value associated with the PORT key. This allows us to set the PORT environment variable in the backend container to the value specified in the ConfigMap.
+                  key: PORT
+
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: JWT_SECRET
+
+
+#liveness and readiness probes are used to determine the health of a container. The readiness probe checks if the container is 
+#ready to accept traffic, while the liveness probe checks if the container is still running. If the liveness probe fails, 
+#Kubernetes will restart the container. In this case, both probes are configured to send an HTTP GET request to the root path 
+#(/) of the backend application on port 5000. The initialDelaySeconds parameter specifies how long to wait before starting the 
+#probes, and the periodSeconds parameter specifies how often to perform the probes.
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

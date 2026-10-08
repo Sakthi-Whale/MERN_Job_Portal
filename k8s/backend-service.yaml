@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend #this is the name of the service that will be created in Kubernetes. It is used to identify the service and can be used by other resources to reference it.
+spec:
+  selector:
+    app: backend #this selector will match the label of the pods created by the backend deployment, allowing the service to route traffic to those pods
+
+  ports:
+    - port: 5000
+      targetPort: 5000

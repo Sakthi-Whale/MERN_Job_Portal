@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mongo #here we are specifying the label selector for the deployment which will be used to identify the pods that it manages  
+
+  template:
+    metadata:
+      labels:
+        app: mongo #here we are labeling the pod with the label app: mongo which will be used by the deployment to identify the pods that it manages
+
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:8 #here we are using the official MongoDB image from Docker Hub with the tag 8 which specifies the version of MongoDB to use
+
+          ports:
+            - containerPort: 27017 #here we are exposing the default port for MongoDB which is 27017
+
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db #here we are mounting the volume to the container at the path /data/db which is the default data directory for MongoDB
+
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc #here we are using the persistent volume claim that we created earlier to mount the volume to the container
+            #this tells kubernetes 'For this MongoDB Pod, give me the storage requested by mongo-pvc'

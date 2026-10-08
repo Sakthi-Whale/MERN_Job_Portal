@@ -1,0 +1,9 @@
+#this file is a Kubernetes ConfigMap manifest that defines a ConfigMap named backend-config. A ConfigMap is an API object used 
+#to store non-confidential data in key-value pairs. In this case, the ConfigMap contains two key-value pairs: MONGO_URI and PORT. The MONGO_URI key holds the connection string for a MongoDB database, while the PORT key specifies the port number on which the backend application will run. This ConfigMap can be mounted as environment variables or files in a pod, allowing the backend application to access these configuration values at runtime.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  MONGO_URI: mongodb://mongo:27017/ai-job-portal #here we are setting the environment variable MONGO_URI to the connection string for our MongoDB database which is running in a separate pod and is accessible through the service named mongo on port 27017 and the database name is ai-job-portal
+  PORT: "5000"
